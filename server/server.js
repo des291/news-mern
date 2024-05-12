@@ -1,6 +1,6 @@
-import { express } from "express";
-import { cors } from "cors";
-import { index } from "./routes/index.js";
+import express from "express";
+import cors from "cors";
+import index from "./routes/index.js";
 import "dotenv/config";
 
 const PORT = process.env.PORT || 5050;
