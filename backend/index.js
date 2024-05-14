@@ -2,21 +2,14 @@ import express, { request, response } from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
 import { Article } from "./models/article.js";
+import indexRoute from "./routes/indexRoute.js";
 
 const app = express();
 
 // Middleware for parsing request body
 app.use(express.json());
 
-app.get("/", async (request, response) => {
-  try {
-    const articles = await Article.find({});
-    return response.status(200).json(articles);
-  } catch (error) {
-    console.log(error.message);
-    response.status(500).send({ message: error.message });
-  }
-});
+app.use("/", indexRoute);
 
 mongoose
   .connect(process.env.ATLAS_URI)
