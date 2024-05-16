@@ -8,7 +8,7 @@ const Index = () => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5555")
+      .get("https://news-mern-y7lx.onrender.com")
       .then((response) => {
         console.log(response.data);
         setArticles(response.data);
