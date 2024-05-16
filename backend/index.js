@@ -5,6 +5,7 @@ import { Article } from "./models/article.js";
 import indexRoute from "./routes/indexRoute.js";
 import cors from "cors";
 import schedule from "node-schedule";
+import helmet from "helmet";
 
 // Schedule scraper.py to run at 06:00 and 17:00
 const rule = new schedule.RecurrenceRule();
@@ -29,6 +30,8 @@ app.use(cors());
 //     allowedHeaders: ["Content-Type"],
 //   })
 // );
+
+app.use(helmet());
 
 app.use("/", indexRoute);
 
