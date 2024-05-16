@@ -37,7 +37,6 @@ const Index = () => {
       <div className="sticky top-0 container mx-auto" id="sport">
         <div className="bg-stone-900">
           <h1 className="text-5xl italic text-blue-400">SPORT</h1>
-          script needs adding
         </div>
       </div>
     </div>
