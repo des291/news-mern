@@ -10,8 +10,8 @@ import helmet from "helmet";
 
 // Schedule scraper.py to run at 06:00 and 17:00
 const rule = new schedule.RecurrenceRule();
-rule.hour = [6, 17, 20];
-rule.minute = 0;
+rule.hour = [6, 17, 19];
+rule.minute = [0, 5];
 rule.second = 0;
 const scraper = schedule.scheduleJob(rule, () => {
   spawn("./scraper/venv/bin/python", ["scraper/scraper.py"]);
