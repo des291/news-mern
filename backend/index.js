@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { Article } from "./models/article.js";
 import indexRoute from "./routes/indexRoute.js";
 import cors from "cors";
-import spawn from "child_process";
+import { spawn } from "child_process";
 import schedule from "node-schedule";
 import helmet from "helmet";
 
