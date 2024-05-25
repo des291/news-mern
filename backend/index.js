@@ -21,7 +21,7 @@ const scraper = schedule.scheduleJob(rule, () => {
   ]);
 });
 
-console.log(fs.readdirSync(process.cwd()));
+console.log(fs.readdirSync(`${process.cwd()}/scraper`));
 const app = express();
 
 // Middleware for parsing request body
