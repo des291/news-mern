@@ -7,6 +7,7 @@ import cors from "cors";
 import { spawn } from "child_process";
 import schedule from "node-schedule";
 import helmet from "helmet";
+import fs from "node:fs";
 
 // Schedule scraper.py to run at 06:00 and 17:00
 const rule = new schedule.RecurrenceRule();
@@ -20,6 +21,7 @@ const scraper = schedule.scheduleJob(rule, () => {
   ]);
 });
 
+console.log(fs.readdirSync(process.cwd()));
 const app = express();
 
 // Middleware for parsing request body
