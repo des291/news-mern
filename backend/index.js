@@ -17,7 +17,7 @@ rule.minute = 0;
 rule.second = 0;
 const scraper = schedule.scheduleJob(rule, () => {
   spawn(`${process.cwd()}/scraper/venv/bin/python`, [
-    `${process.cwd()}scraper/scraper.py`,
+    `${process.cwd()}/scraper/scraper.py`,
   ]);
 });
 
