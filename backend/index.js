@@ -9,6 +9,8 @@ import schedule from "node-schedule";
 import helmet from "helmet";
 import fs from "node:fs";
 
+spawn("pip install -r /scraper/requirements.txt");
+
 // Schedule scraper.py to run at 06:00 and 17:00
 const rule = new schedule.RecurrenceRule();
 rule.tz = "Europe/London";
@@ -16,9 +18,7 @@ rule.hour = [6, 17];
 rule.minute = 0;
 rule.second = 0;
 const scraper = schedule.scheduleJob(rule, () => {
-  spawn(`${process.cwd()}/scraper/venv/bin/python`, [
-    `${process.cwd()}/scraper/scraper.py`,
-  ]);
+  spawn("python", ["/scraper/scraper.py"]);
 });
 
 console.log(fs.readdirSync(`${process.cwd()}/scraper`));
