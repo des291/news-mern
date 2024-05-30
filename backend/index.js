@@ -21,7 +21,6 @@ const scraper = schedule.scheduleJob(rule, () => {
   spawn("python", ["/scraper/scraper.py"]);
 });
 
-console.log(fs.readdirSync(`${process.cwd()}/scraper`));
 const app = express();
 
 // Middleware for parsing request body
