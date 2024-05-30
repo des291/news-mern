@@ -9,7 +9,7 @@ import schedule from "node-schedule";
 import helmet from "helmet";
 import fs from "node:fs";
 
-spawn("pip install -r /scraper/requirements.txt");
+spawn("pip install", ["-r", "/scraper/requirements.txt"]);
 
 // Schedule scraper.py to run at 06:00 and 17:00
 const rule = new schedule.RecurrenceRule();
