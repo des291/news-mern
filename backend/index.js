@@ -4,21 +4,9 @@ import mongoose from "mongoose";
 import { Article } from "./models/article.js";
 import indexRoute from "./routes/indexRoute.js";
 import cors from "cors";
-import { exec, spawn } from "child_process";
+import { spawn } from "child_process";
 import schedule from "node-schedule";
 import helmet from "helmet";
-
-exec(
-  "pip install -r requirements.txt",
-  { cwd: `$process.cwd()/scraper` },
-  (error, stdout, stderr) => {
-    if (error) {
-      console.error(`Error executing pip install: ${error.message}`);
-      return;
-    }
-    console.log(`Pip install output:\n${stdout}`);
-  }
-);
 
 // Schedule scraper.py to run at 06:00 and 17:00
 const rule = new schedule.RecurrenceRule();
