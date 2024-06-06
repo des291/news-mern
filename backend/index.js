@@ -7,6 +7,9 @@ import cors from "cors";
 import { spawn } from "child_process";
 import schedule from "node-schedule";
 import helmet from "helmet";
+import http from "http";
+import https from "https";
+import fs from "fs";
 
 // Schedule scraper.py to run at 06:00 and 17:00
 const rule = new schedule.RecurrenceRule();
@@ -19,6 +22,13 @@ const scraper = schedule.scheduleJob(rule, () => {
 });
 
 const app = express();
+
+const options = {
+  key: fs.readFileSync("key.pem"),
+  cert: fs.readFileSync("server.crt"),
+};
+const httpServer = http.createServer(app);
+const httpsServer = https.createServer(options, app);
 
 // Middleware for parsing request body
 app.use(express.json());
@@ -41,8 +51,11 @@ mongoose
   .connect(process.env.ATLAS_URI)
   .then(() => {
     console.log("App connected to database");
-    app.listen(process.env.PORT, () => {
-      console.log(`App is listening to port: ${process.env.PORT}`);
+    httpServer.listen(process.env.HTTP_PORT, () => {
+      console.log(`HTTP is listening to port: ${process.env.HTTP_PORT}`);
+    });
+    httpsServer.listen(process.env.HTTPS_PORT, () => {
+      console.log(`HTTPS is listening to port: ${process.env.HTTPS_PORT}`);
     });
   })
   .catch(() => {
