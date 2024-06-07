@@ -18,7 +18,7 @@ rule.hour = [6, 17];
 rule.minute = 0;
 rule.second = 0;
 const scraper = schedule.scheduleJob(rule, () => {
-  spawn("python", ["/scraper/scraper.py"]);
+  spawn("scraper/venv/bin/python", ["/scraper/scraper.py"]);
 });
 
 const app = express();
