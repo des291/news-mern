@@ -34,14 +34,14 @@ const httpsServer = https.createServer(options, app);
 app.use(express.json());
 
 // Middleware for handling CORS policy
-app.use(cors());
-// app.use(
-//   cors({
-//     origin: "http://localhost:3000",
-//     methods: ["GET"],
-//     allowedHeaders: ["Content-Type"],
-//   })
-// );
+// app.use(cors());
+app.use(
+  cors({
+    origin: "https://news-summary-wj0i.onrender.com",
+    methods: ["GET"],
+    allowedHeaders: ["Content-Type"],
+  })
+);
 
 app.use(helmet());
 
