@@ -8,7 +8,7 @@ const Index = () => {
 
   useEffect(() => {
     axios
-      .get("167.235.72.134")
+      .get("https://167.235.72.134/")
       .then((response) => {
         console.log(response.data);
         setArticles(response.data);
