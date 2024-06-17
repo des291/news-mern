@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 import { Article } from "./models/article.js";
 import indexRoute from "./routes/indexRoute.js";
 import cors from "cors";
-import { spawn } from "child_process";
+import { spawn, exec } from "child_process";
 import schedule from "node-schedule";
 import helmet from "helmet";
 import http from "http";
@@ -18,14 +18,29 @@ rule.hour = [6, 17];
 rule.minute = 0;
 rule.second = 0;
 const scraper = schedule.scheduleJob(rule, () => {
-  spawn("scraper/venv/bin/python", ["/scraper/scraper.py"]);
+  console.log("Scraper schedule has been triggered");
+  // spawn("scraper/venv/bin/python", ["scraper/scraper.py"]);
+  exec(
+    ". ./scraper/venv/bin/activate && python ./scraper/scraper.py",
+    (error, stdout, stderr) => {
+      if (error) {
+        console.error(`exec error: ${error}`);
+        return;
+      }
+      console.log(`stdout: ${stdout}`);
+      console.error(`stderr: ${stderr}`);
+      console.log("Articles updated " + new Date().toString());
+    }
+  );
 });
 
 const app = express();
 
 const options = {
-  key: fs.readFileSync("key.pem"),
-  cert: fs.readFileSync("server.crt"),
+  key: fs.readFileSync("/etc/letsencrypt/live/api.fast-news.xyz/privkey.pem"),
+  cert: fs.readFileSync(
+    "/etc/letsencrypt/live/api.fast-news.xyz/fullchain.pem"
+  ),
 };
 const httpServer = http.createServer(app);
 const httpsServer = https.createServer(options, app);
@@ -37,9 +52,7 @@ app.use(express.json());
 // app.use(cors());
 app.use(
   cors({
-    origin: "https://news-summary-wj0i.onrender.com",
-    methods: ["GET"],
-    allowedHeaders: ["Content-Type"],
+    origin: "https://fast-news.xyz",
   })
 );
 

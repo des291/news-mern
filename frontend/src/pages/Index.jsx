@@ -8,7 +8,7 @@ const Index = () => {
 
   useEffect(() => {
     axios
-      .get("https://static.134.72.235.167.clients.your-server.de/")
+      .get("https://api.fast-news.xyz/")
       .then((response) => {
         console.log(response.data);
         setArticles(response.data);
