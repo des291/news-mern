@@ -4,7 +4,7 @@ const Article = ({ article }) => {
   return (
     <div className="container">
       <details>
-        <summary className="list-none">
+        <summary className="list-none [list-style: none]">
           <h2 className="inline headline text-xl font-semibold hover:cursor-pointer">
             {article.title}
           </h2>
