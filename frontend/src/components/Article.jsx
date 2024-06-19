@@ -4,7 +4,7 @@ const Article = ({ article }) => {
   return (
     <div className="container">
       <details>
-        <summary className="list-none [list-style: none]">
+        <summary className="list-none">
           <h2 className="inline headline text-xl font-semibold hover:cursor-pointer">
             {article.title}
           </h2>
@@ -12,6 +12,7 @@ const Article = ({ article }) => {
         <p className="summary font-extralight">{article.summary}</p>
         <span className="font-extralight">Read more:</span>
         <a className="link m-2 font-light" href={article.link} target="_blank">
+          <img src="frontend/public/images/bbc-news.png" alt="BBC News Logo" />
           BBC
         </a>
         <a
