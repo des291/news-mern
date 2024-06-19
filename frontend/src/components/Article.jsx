@@ -12,7 +12,7 @@ const Article = ({ article }) => {
         <p className="summary font-extralight">{article.summary}</p>
         <span className="font-extralight">Read more:</span>
         <a className="link m-2 font-light" href={article.link} target="_blank">
-          <img src="./public/images/bbc-news.png" alt="BBC News Logo" />
+          <img src="./images/bbc-news.png" alt="BBC News Logo" />
           BBC
         </a>
         <a
