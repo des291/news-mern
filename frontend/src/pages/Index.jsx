@@ -5,10 +5,10 @@ import Article from "../components/Article";
 const Index = () => {
   const [articles, setArticles] = useState([]);
   const [datestamp, setDatestamp] = useState();
-
   useEffect(() => {
     axios
       .get("https://api.fast-news.xyz/")
+      //.get("http://localhost:5555/")
       .then((response) => {
         console.log(response.data);
         setArticles(response.data);

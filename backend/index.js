@@ -30,31 +30,35 @@ const scraper = schedule.scheduleJob(rule, () => {
       console.log(`stdout: ${stdout}`);
       console.error(`stderr: ${stderr}`);
       console.log("Articles updated " + new Date().toString());
-    }
+    },
   );
 });
 
 const app = express();
+if (process.env.NODE_ENV === "production") {
+  const options = {
+    key: fs.readFileSync("/etc/letsencrypt/live/api.fast-news.xyz/privkey.pem"),
+    cert: fs.readFileSync(
+      "/etc/letsencrypt/live/api.fast-news.xyz/fullchain.pem",
+    ),
+  };
+  const httpsServer = https.createServer(options, app);
+}
 
-const options = {
-  key: fs.readFileSync("/etc/letsencrypt/live/api.fast-news.xyz/privkey.pem"),
-  cert: fs.readFileSync(
-    "/etc/letsencrypt/live/api.fast-news.xyz/fullchain.pem"
-  ),
-};
 const httpServer = http.createServer(app);
-const httpsServer = https.createServer(options, app);
 
 // Middleware for parsing request body
 app.use(express.json());
 
 // Middleware for handling CORS policy
 // app.use(cors());
-app.use(
-  cors({
-    origin: "https://www.fast-news.xyz",
-  })
-);
+if (process.env.NODE_ENV === "production") {
+  app.use(
+    cors({
+      origin: "https://www.fast-news.xyz",
+    }),
+  );
+}
 
 app.use(helmet());
 
@@ -67,9 +71,11 @@ mongoose
     httpServer.listen(process.env.HTTP_PORT, () => {
       console.log(`HTTP is listening to port: ${process.env.HTTP_PORT}`);
     });
-    httpsServer.listen(process.env.HTTPS_PORT, () => {
-      console.log(`HTTPS is listening to port: ${process.env.HTTPS_PORT}`);
-    });
+    if (process.env.NODE_ENV === "production") {
+      httpsServer.listen(process.env.HTTPS_PORT, () => {
+        console.log(`HTTPS is listening to port: ${process.env.HTTPS_PORT}`);
+      });
+    }
   })
   .catch(() => {
     console.log(error);
