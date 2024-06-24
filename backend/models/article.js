@@ -29,7 +29,8 @@ const articleSchema = mongoose.Schema(
   },
   {
     timestamps: true,
-  }
+  },
 );
 
-export const Article = mongoose.model("Article", articleSchema);
+export const News = mongoose.model("News", articleSchema, "articles.news");
+export const Sport = mongoose.model("Sport", articleSchema, "articles.sport");

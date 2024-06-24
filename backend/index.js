@@ -1,7 +1,7 @@
 import express, { request, response } from "express";
 import "dotenv/config";
 import mongoose from "mongoose";
-import { Article } from "./models/article.js";
+import { News, Sport } from "./models/article.js";
 import indexRoute from "./routes/indexRoute.js";
 import cors from "cors";
 import { spawn, exec } from "child_process";
@@ -65,7 +65,7 @@ app.use(helmet());
 app.use("/", indexRoute);
 
 mongoose
-  .connect(process.env.ATLAS_URI)
+  .connect(process.env.ATLAS_URI, { dbName: "articles" })
   .then(() => {
     console.log("App connected to database");
     httpServer.listen(process.env.HTTP_PORT, () => {
@@ -78,5 +78,5 @@ mongoose
     }
   })
   .catch(() => {
-    console.log(error);
+    // console.log(error);
   });

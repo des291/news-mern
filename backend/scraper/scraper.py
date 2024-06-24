@@ -101,6 +101,9 @@ def get_datestamp():
     return f"{day}/{month} {time}"
 
 bbc_articles = get_articles(bbc.articles_dicts[:7])
+bbc_sport = ReadRss('https://feeds.bbci.co.uk/sport/rss.xml', headers)
+
+bbc_sport_articles = get_articles(bbc_sport.articles_dicts[:5])
 guardian_articles = get_articles(guardian.articles_dicts)
 datestamp = get_datestamp()
 
@@ -109,10 +112,17 @@ for article in bbc_articles:
     article['guardian_link'] = get_similar_link(article['text'], guardian_articles)
     article['datestamp'] = datestamp
 
+for article in bbc_sport_articles:
+    article['summary'] = summarise_article(article['text'])
+    article['guardian_link'] = ""
+    article['datestamp'] = datestamp
+
 # Set up MongoDB. Remove existing articles then add the new ones.
 client = MongoClient(os.environ.get("ATLAS_URI"))
-db = client["articles-collection"]
-db.drop_collection("articles")
-collection = db["articles"]
+db = client["articles"]
+db.drop_collection("news")
+collection = db["news"]
 collection.insert_many(bbc_articles)
-
+db.drop_collection("sport")
+collection = db["sport"]
+collection.insert_many(bbc_sport_articles)

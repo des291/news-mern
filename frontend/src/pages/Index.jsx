@@ -3,16 +3,18 @@ import axios from "axios";
 import Article from "../components/Article";
 
 const Index = () => {
-  const [articles, setArticles] = useState([]);
+  const [news, setNews] = useState([]);
+  const [sport, setSport] = useState([]);
   const [datestamp, setDatestamp] = useState();
   useEffect(() => {
     axios
-      .get("https://api.fast-news.xyz/")
-      //.get("http://localhost:5555/")
+      //.get("https://api.fast-news.xyz/")
+      .get("http://localhost:5555/")
       .then((response) => {
-        console.log(response.data);
-        setArticles(response.data);
-        setDatestamp(response.data[0]["datestamp"]);
+        // console.log(response.data);
+        setNews(response.news.data);
+        setSport(response.sport.data);
+        setDatestamp(response.news.data[0]["datestamp"]);
       })
       .catch((error) => {
         console.log(error);
@@ -29,7 +31,7 @@ const Index = () => {
       </div>
 
       <div>
-        {articles.map((article, _index) => (
+        {news.map((article, _index) => (
           <Article id={_index} key={_index} article={article} />
         ))}
       </div>
@@ -37,6 +39,11 @@ const Index = () => {
       <div className="sticky top-0 container mx-auto" id="sport">
         <div className="bg-stone-900">
           <h1 className="text-5xl italic text-blue-400">SPORT</h1>
+        </div>
+        <div>
+          {sport.map((article, _index) => (
+            <Article id={_index} key={_index} article={article} />
+          ))}
         </div>
       </div>
     </div>
