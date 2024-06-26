@@ -11,10 +11,10 @@ const Index = () => {
       //.get("https://api.fast-news.xyz/")
       .get("http://localhost:5555/")
       .then((response) => {
-        // console.log(response.data);
-        setNews(response.news.data);
-        setSport(response.sport.data);
-        setDatestamp(response.news.data[0]["datestamp"]);
+        console.log(response.data.sport);
+        setNews(response.data.news);
+        setSport(response.data.sport);
+        setDatestamp(response.data.news[0]["datestamp"]);
       })
       .catch((error) => {
         console.log(error);

@@ -32,5 +32,5 @@ const articleSchema = mongoose.Schema(
   },
 );
 
-export const News = mongoose.model("News", articleSchema, "articles.news");
-export const Sport = mongoose.model("Sport", articleSchema, "articles.sport");
+export const News = mongoose.model("News", articleSchema, "news");
+export const Sport = mongoose.model("Sport", articleSchema, "sport");

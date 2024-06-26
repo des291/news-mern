@@ -1,5 +1,7 @@
 import numpy
 from openai import OpenAI
+import tiktoken
+from time import sleep
 import trafilatura
 from bs4 import BeautifulSoup
 import requests
@@ -52,6 +54,7 @@ class ReadRss:
 
 bbc = ReadRss('https://feeds.bbci.co.uk/news/rss.xml?edition=uk', headers)
 guardian = ReadRss('https://www.theguardian.com/uk/rss', headers)
+bbc_sport = ReadRss('https://feeds.bbci.co.uk/sport/rss.xml', headers)
 
 def get_articles(articles_dicts):
     """Extracts the text from each of the links in articles_dicts and returns a list of dicts containig title, link and text values."""
@@ -66,6 +69,13 @@ def get_articles(articles_dicts):
         article_data['text'] = result
         articles.append(article_data)
     return articles
+
+def num_tokens_from_string(string: str) -> int:
+    """Returns the number of tokens in a text string."""
+    encoding = tiktoken.encoding_for_model("gpt-3.5-turbo")
+    num_tokens = len(encoding.encode(string))
+    return num_tokens
+
 
 def summarise_article(article_text):
     """Takes the article text and asks ChatGPT to provide a summary. Returns the summary."""
@@ -101,18 +111,28 @@ def get_datestamp():
     return f"{day}/{month} {time}"
 
 bbc_articles = get_articles(bbc.articles_dicts[:7])
-bbc_sport = ReadRss('https://feeds.bbci.co.uk/sport/rss.xml', headers)
-
 bbc_sport_articles = get_articles(bbc_sport.articles_dicts[:5])
 guardian_articles = get_articles(guardian.articles_dicts)
 datestamp = get_datestamp()
 
+num_tokens = 0
+
 for article in bbc_articles:
+    num_tokens += num_tokens_from_string(article['text'])
+    print(num_tokens)
+    if num_tokens > 60000:
+        sleep(60)
+        num_tokens = 0
     article['summary'] = summarise_article(article['text'])
     article['guardian_link'] = get_similar_link(article['text'], guardian_articles)
     article['datestamp'] = datestamp
 
 for article in bbc_sport_articles:
+    num_tokens += num_tokens_from_string(article['text'])
+    print(num_tokens)
+    if num_tokens > 60000:
+        sleep(60)
+        num_tokens = 0
     article['summary'] = summarise_article(article['text'])
     article['guardian_link'] = ""
     article['datestamp'] = datestamp
