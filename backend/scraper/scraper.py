@@ -118,11 +118,11 @@ datestamp = get_datestamp()
 num_tokens = 0
 
 for article in bbc_articles:
-    num_tokens += num_tokens_from_string(article['text'])
-    print(num_tokens)
-    if num_tokens > 60000:
-        sleep(60)
-        num_tokens = 0
+    # num_tokens += num_tokens_from_string(article['text'])
+    # print(num_tokens)
+    # if num_tokens > 60000:
+    #     sleep(60)
+    #     num_tokens = 0
     article['summary'] = summarise_article(article['text'])
     article['guardian_link'] = get_similar_link(article['text'], guardian_articles)
     article['datestamp'] = datestamp
