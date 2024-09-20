@@ -10,6 +10,7 @@ import helmet from "helmet";
 import http from "http";
 import https from "https";
 import fs from "fs";
+import path from path;
 
 // Schedule scraper.py to run at 06:00 and 17:00
 const rule = new schedule.RecurrenceRule();
@@ -35,16 +36,11 @@ const scraper = schedule.scheduleJob(rule, () => {
 });
 
 const app = express();
-if (process.env.NODE_ENV === "production") {
-  const options = {
-    key: fs.readFileSync("/etc/letsencrypt/live/api.fast-news.xyz/privkey.pem"),
-    cert: fs.readFileSync(
-      "/etc/letsencrypt/live/api.fast-news.xyz/fullchain.pem",
-    ),
-  };
-  const httpsServer = https.createServer(options, app);
-}
-
+const options = {
+  key: fs.readFileSync("/etc/letsencrypt/live/api.fast-news.xyz/privkey.pem"),
+  cert: fs.readFileSync("/etc/letsencrypt/live/api.fast-news.xyz/fullchain.pem"),
+};
+const httpsServer = https.createServer(options, app);
 const httpServer = http.createServer(app);
 
 // Middleware for parsing request body
@@ -52,17 +48,20 @@ app.use(express.json());
 
 // Middleware for handling CORS policy
 // app.use(cors());
-if (process.env.NODE_ENV === "production") {
-  app.use(
+app.use(
     cors({
       origin: "https://www.fast-news.xyz",
-    }),
+    })
   );
-}
 
 app.use(helmet());
 
 app.use("/", indexRoute);
+
+// Specific middleware for serving .well-known directory
+const __dirname = import.meta.dirname;
+const acmeChallengePath = path.join(__dirname, '.well-known/acme-challenge');
+app.use('/.well-known/acme-challenge', express.static(acmeChallengePath));
 
 mongoose
   .connect(process.env.ATLAS_URI, { dbName: "articles" })
@@ -71,12 +70,10 @@ mongoose
     httpServer.listen(process.env.HTTP_PORT, () => {
       console.log(`HTTP is listening to port: ${process.env.HTTP_PORT}`);
     });
-    if (process.env.NODE_ENV === "production") {
-      httpsServer.listen(process.env.HTTPS_PORT, () => {
-        console.log(`HTTPS is listening to port: ${process.env.HTTPS_PORT}`);
-      });
-    }
+    httpsServer.listen(process.env.HTTPS_PORT, () => {
+      console.log(`HTTPS is listening to port: ${process.env.HTTPS_PORT}`);
+    });
   })
   .catch(() => {
-    // console.log(error);
+    console.log(error);
   });
