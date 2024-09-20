@@ -10,7 +10,7 @@ import helmet from "helmet";
 import http from "http";
 import https from "https";
 import fs from "fs";
-import path from path;
+import path from "path";
 
 // Schedule scraper.py to run at 06:00 and 17:00
 const rule = new schedule.RecurrenceRule();
@@ -38,7 +38,9 @@ const scraper = schedule.scheduleJob(rule, () => {
 const app = express();
 const options = {
   key: fs.readFileSync("/etc/letsencrypt/live/api.fast-news.xyz/privkey.pem"),
-  cert: fs.readFileSync("/etc/letsencrypt/live/api.fast-news.xyz/fullchain.pem"),
+  cert: fs.readFileSync(
+    "/etc/letsencrypt/live/api.fast-news.xyz/fullchain.pem",
+  ),
 };
 const httpsServer = https.createServer(options, app);
 const httpServer = http.createServer(app);
@@ -49,10 +51,10 @@ app.use(express.json());
 // Middleware for handling CORS policy
 // app.use(cors());
 app.use(
-    cors({
-      origin: "https://www.fast-news.xyz",
-    })
-  );
+  cors({
+    origin: "https://www.fast-news.xyz",
+  }),
+);
 
 app.use(helmet());
 
@@ -60,8 +62,8 @@ app.use("/", indexRoute);
 
 // Specific middleware for serving .well-known directory
 const __dirname = import.meta.dirname;
-const acmeChallengePath = path.join(__dirname, '.well-known/acme-challenge');
-app.use('/.well-known/acme-challenge', express.static(acmeChallengePath));
+const acmeChallengePath = path.join(__dirname, ".well-known/acme-challenge");
+app.use("/.well-known/acme-challenge", express.static(acmeChallengePath));
 
 mongoose
   .connect(process.env.ATLAS_URI, { dbName: "articles" })
