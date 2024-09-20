@@ -8,8 +8,8 @@ const Index = () => {
   const [datestamp, setDatestamp] = useState();
   useEffect(() => {
     axios
-      //.get("https://api.fast-news.xyz/")
-      .get("http://localhost:5555/")
+      .get("https://api.fast-news.xyz/")
+      // .get("http://localhost:5555/")
       .then((response) => {
         console.log(response.data.sport);
         setNews(response.data.news);
