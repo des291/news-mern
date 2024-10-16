@@ -11,5 +11,91 @@
   <body class="bg-stone-900 text-zinc-200">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      let news_date;
+      let sport_date;
+      let news_date_container;
+
+      function initializeObserver() {
+        news_date = document.getElementById("news-date");
+        sport_date = document.getElementById("sport-date");
+
+        if (news_date && sport_date) {
+          console.log("Elements found. Initialising observer.");
+
+          news_date_container = findScrollableParent(news_date);
+          console.log("Scrollable container:", news_date_container);
+          createObserver();
+        } else {
+          console.error(
+            "Could not find elements. Make sure they exist in the DOM."
+          );
+        }
+      }
+
+      function findScrollableParent(element) {
+        if (!element) {
+          return document.documentElement;
+        }
+
+        if (element.scrollHeight > element.clientHeight) {
+          return element;
+        } else {
+          return findScrollableParent(element.parentElement);
+        }
+      }
+
+      function createObserver() {
+        let options = {
+          root: news_date_container,
+          rootMargin: "0px",
+          threshold: 0.1,
+        };
+
+        let observer = new IntersectionObserver(handleIntersect, options);
+        observer.observe(news_date);
+        console.log("Observer created and observing news_date element.");
+      }
+
+      // function handleIntersect(entries, observer) {
+      //   entries.forEach((entry) => {
+      //     console.log(`Intersection ratio: ${entry.intersectionRatio}`);
+
+      //     if (!entry.isIntersecting) {
+      //       console.log("news_date is not visible. Showing sport_date.");
+      //       sport_date.classList.remove("hidden");
+      //     } else {
+      //       console.log("news_date is visible. Hiding sport_date.");
+      //       sport_date.classList.add("hidden");
+      //     }
+
+      //     console.log("sport_date classes:", sport_date.classList.toString());
+      //   });
+      // }
+
+      function handleIntersect(entries, observer) {
+        entries.forEach((entry) => {
+          console.log(`Intersection ratio: ${entry.intersectionRatio}`);
+          console.log("Is intersecting:", entry.isIntersecting);
+          console.log("Bounding client rect:", entry.boundingClientRect);
+
+          // Check if the sticky element has moved to its sticky position
+          const news_date_top = entry.boundingClientRect.top;
+          const is_sticky = news_date_top <= 0;
+
+          if (is_sticky) {
+            console.log("news_date is in sticky position. Showing sport_date.");
+            sport_date.classList.remove("hidden");
+          } else {
+            console.log(
+              "news_date is not in sticky position. Hiding sport_date."
+            );
+            sport_date.classList.add("hidden");
+          }
+        });
+      }
+
+      document.addEventListener("DOMContentLoaded", initializeObserver);
+    </script>
   </body>
 </html>

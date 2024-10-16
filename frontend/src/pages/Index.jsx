@@ -8,8 +8,8 @@ const Index = () => {
   const [datestamp, setDatestamp] = useState();
   useEffect(() => {
     axios
-      .get("https://api.fast-news.xyz/")
-      // .get("http://localhost:5555/")
+      // .get("https://api.fast-news.xyz/")
+      .get("http://localhost:5555/")
       .then((response) => {
         console.log(response.data.sport);
         setNews(response.data.news);
@@ -25,7 +25,10 @@ const Index = () => {
     <div className="container mx-auto" id="news">
       <div className="columns-2 sticky top-0 bg-stone-900">
         <h1 className="text-5xl italic text-orange-400">NEWS</h1>
-        <h1 className="text-right text-5xl italic text-orange-400 font-thin">
+        <h1
+          className="text-right text-5xl italic text-orange-400 font-thin"
+          id="news-date"
+        >
           {datestamp}
         </h1>
       </div>
@@ -37,8 +40,14 @@ const Index = () => {
       </div>
 
       <div className="sticky top-0 container mx-auto" id="sport">
-        <div className="bg-stone-900">
+        <div className="bg-stone-900 sticky top-0">
           <h1 className="text-5xl italic text-blue-400">SPORT</h1>
+          <h1
+            className="text-right text-5xl italic text-blue-400 font-thin"
+            id="sport-date"
+          >
+            {datestamp}
+          </h1>
         </div>
         <div>
           {sport.map((article, _index) => (
