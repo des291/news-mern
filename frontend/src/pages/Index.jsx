@@ -21,9 +21,16 @@ const Index = () => {
       });
   }, []);
 
+  useEffect(() => {
+    const script = document.createElement("script");
+    script.src = "/src/intersection.js";
+    script.async = true;
+    document.body.appendChild(script);
+  }, []);
+
   return (
     <div className="container mx-auto" id="news">
-      <div className="columns-2 sticky top-0 bg-stone-900">
+      <div className="columns-2 xsticky top-0 bg-stone-900">
         <h1 className="text-5xl italic text-orange-400">NEWS</h1>
         <h1
           className="text-right text-5xl italic text-orange-400 font-thin"
@@ -40,7 +47,7 @@ const Index = () => {
       </div>
 
       <div className="sticky top-0 container mx-auto" id="sport">
-        <div className="bg-stone-900 sticky top-0">
+        <div className="bg-stone-900 xsticky top-0">
           <h1 className="text-5xl italic text-blue-400">SPORT</h1>
           <h1
             className="text-right text-5xl italic text-blue-400 font-thin"
