@@ -30,8 +30,10 @@ const Index = () => {
 
   return (
     <div className="container mx-auto" id="news">
-      <div className="columns-2 xsticky top-0 bg-stone-900">
-        <h1 className="text-5xl italic text-orange-400">NEWS</h1>
+      <div className="columns-2 sticky top-0 bg-stone-900">
+        <h1 className="text-5xl italic text-orange-400" id="news-header">
+          NEWS
+        </h1>
         <h1
           className="text-right text-5xl italic text-orange-400 font-thin"
           id="news-date"
@@ -46,11 +48,13 @@ const Index = () => {
         ))}
       </div>
 
-      <div className="sticky top-0 container mx-auto" id="sport">
-        <div className="bg-stone-900 xsticky top-0">
-          <h1 className="text-5xl italic text-blue-400">SPORT</h1>
+      <div className="sticky top-0 mx-auto" id="sport">
+        <div className="columns-2 bg-stone-900 sticky top-0">
+          <h1 className="text-5xl italic text-blue-400" id="sport-header">
+            SPORT
+          </h1>
           <h1
-            className="text-right text-5xl italic text-blue-400 font-thin"
+            className="text-right text-5xl italic text-blue-400 font-thin hidden"
             id="sport-date"
           >
             {datestamp}
