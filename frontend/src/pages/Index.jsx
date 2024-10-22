@@ -23,7 +23,7 @@ const Index = () => {
 
   useEffect(() => {
     const script = document.createElement("script");
-    script.src = "/src/intersection.js";
+    script.src = "/public/js/intersection.js";
     script.async = true;
     document.body.appendChild(script);
   }, []);
