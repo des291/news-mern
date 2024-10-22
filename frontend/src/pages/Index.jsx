@@ -35,7 +35,7 @@ const Index = () => {
           NEWS
         </h1>
         <h1
-          className="text-right text-5xl italic text-orange-400 font-thin"
+          className="text-right text-nowrap text-5xl italic text-orange-400 font-thin"
           id="news-date"
         >
           {datestamp}
@@ -54,7 +54,7 @@ const Index = () => {
             SPORT
           </h1>
           <h1
-            className="text-right text-5xl italic text-blue-400 font-thin hidden"
+            className="text-right text-nowrap text-5xl italic text-blue-400 font-thin hidden"
             id="sport-date"
           >
             {datestamp}
